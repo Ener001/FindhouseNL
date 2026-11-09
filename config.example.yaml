@@ -8,7 +8,7 @@ interval_minutes: 10      # watch / serve modunda tarama aralığı
 # browser: kendi Chrome/Edge'inle açar (önerilen). http: tarayıcısız, ama siteler engelliyor.
 mode: browser
 browser:
-  port: 9222                      # EvBul Chrome penceresinin bağlantı portu
+  port: 9222                      # FindHouseInNL Chrome penceresinin bağlantı portu
   challenge_wait_minutes: 5       # doğrulama çıkınca seni ne kadar beklesin
   profile_dir: browser_profile    # çerezler burada saklanır
 

@@ -1,7 +1,7 @@
 """Gerçek bir Chrome penceresi üzerinden sayfa açan getirici.
 
 Nasıl çalışır:
-- Normal bir Chrome penceresini, ayrı bir "EvBul" profiliyle başlatır (otomasyon
+- Normal bir Chrome penceresini, ayrı bir "FindHouseInNL" profiliyle başlatır (otomasyon
   modunda değil). Pencere zaten açıksa yenisini açmaz, ona bağlanır.
 - Uygulama bu pencerede kendi sekmesini kullanır; sen pencereyi açık bırakırsın.
 - Çerezler/oturumlar browser_profile/ klasöründe kalıcıdır.
@@ -56,7 +56,7 @@ def _cdp_alive(port: int) -> bool:
 
 
 def ensure_chrome(port: int, profile_dir: str, extra_args: list[str] | None = None) -> None:
-    """EvBul Chrome penceresi açık değilse normal şekilde başlatır."""
+    """FindHouseInNL Chrome penceresi açık değilse normal şekilde başlatır."""
     if _cdp_alive(port):
         return
     exe = find_browser()
@@ -66,7 +66,7 @@ def ensure_chrome(port: int, profile_dir: str, extra_args: list[str] | None = No
     args = [exe, f"--remote-debugging-port={port}", f"--user-data-dir={profile}",
             "--no-first-run", "--no-default-browser-check", *(extra_args or []),
             "about:blank"]
-    log.info("EvBul Chrome penceresi açılıyor (%s)", Path(exe).name)
+    log.info("FindHouseInNL Chrome penceresi açılıyor (%s)", Path(exe).name)
     flags = 0x00000008 | 0x00000200 if os.name == "nt" else 0   # DETACHED | NEW_PROCESS_GROUP
     subprocess.Popen(args, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
                      creationflags=flags, start_new_session=os.name != "nt")
@@ -74,7 +74,7 @@ def ensure_chrome(port: int, profile_dir: str, extra_args: list[str] | None = No
         if _cdp_alive(port):
             return
         time.sleep(0.5)
-    raise RuntimeError("Chrome açıldı ama bağlanılamadı. Başka bir EvBul penceresi takılı kalmış "
+    raise RuntimeError("Chrome açıldı ama bağlanılamadı. Başka bir FindHouseInNL penceresi takılı kalmış "
                        "olabilir: tüm Chrome pencerelerini kapatıp tekrar dene.")
 
 
@@ -93,7 +93,7 @@ class BrowserFetcher:
         self.browser = self.pw.chromium.connect_over_cdp(f"http://127.0.0.1:{self.port}")
         self.ctx = self.browser.contexts[0] if self.browser.contexts else self.browser.new_context()
         self.page = self.ctx.new_page()   # uygulamanın kendi sekmesi
-        log.info("EvBul Chrome'a bağlandı.")
+        log.info("FindHouseInNL Chrome'a bağlandı.")
 
     def _alive(self) -> bool:
         try:
@@ -112,7 +112,7 @@ class BrowserFetcher:
     def _wait_for_human(self, url: str):
         if not looks_blocked(self._content()):
             return
-        log.warning(">>> DOĞRULAMA GEREKİYOR: EvBul Chrome penceresinde 'insanım' adımını tamamla "
+        log.warning(">>> DOĞRULAMA GEREKİYOR: FindHouseInNL Chrome penceresinde 'insanım' adımını tamamla "
                     "(%d dk bekliyorum) — %s", self.wait_s // 60, url)
         if self.on_challenge:
             self.on_challenge(url)

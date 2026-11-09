@@ -68,7 +68,7 @@ def make_fetcher(cfg: dict):
         port=b.get("port", 9222),
         extra_args=b.get("extra_args"),
         wait_minutes=b.get("challenge_wait_minutes", 5),
-        on_challenge=lambda url: send_text(cfg, f"⚠️ EvBul doğrulama bekliyor, tarayıcı penceresine bak:\n{url}"))
+        on_challenge=lambda url: send_text(cfg, f"⚠️ FindHouseInNL doğrulama bekliyor, tarayıcı penceresine bak:\n{url}"))
 
 
 def run_once(cfg: dict, db: DB, debug_dir=None, only: list[str] | None = None, fetcher=None) -> dict:

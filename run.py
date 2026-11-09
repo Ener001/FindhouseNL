@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""EvBul — Hollanda kiralık ev toplayıcı.
+"""FindHouseInNL — Hollanda kiralık ev toplayıcı.
 
   py run.py serve            # arayüz (http://127.0.0.1:8000) + arka planda düzenli tarama
   py run.py scrape           # bir kez tara
@@ -80,7 +80,7 @@ def main():
                          daemon=True).start()
         serve(cfg, DB(a.db), wake, state, port=a.port)
     elif a.cmd == "telegram-test":
-        notify(cfg, [Listing("test", "https://example.com", "Test ilanı — EvBul çalışıyor",
+        notify(cfg, [Listing("test", "https://example.com", "Test ilanı — FindHouseInNL çalışıyor",
                              price=1200, area_m2=40, city="Amsterdam", type="studio")])
         print("Gönderildi (gelmediyse bot_token / chat_id'yi kontrol et).")
 
