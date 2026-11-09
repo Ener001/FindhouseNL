@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FindHouseInNL</title>
+<meta name="description" content="Hollanda'daki kiralık oda, stüdyo ve daire ilanlarını 12 siteden tek yerde toplayan uygulama.">
+<style>
+:root{--bg:#faf8f4;--card:#fff;--ink:#1d1d1b;--mute:#6b6a65;--line:#e7e3da;--acc:#e8590c;--acc2:#fff1e6;--ok:#2b8a3e}
+@media (prefers-color-scheme:dark){:root{--bg:#141413;--card:#1e1e1c;--ink:#ecebe6;--mute:#a09e96;--line:#2e2d2a;--acc:#ff8a3d;--acc2:#3a2414}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+header{padding:56px 0 40px}
+.logo{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:-.02em}
+.logo i{width:34px;height:34px;border-radius:9px;background:var(--acc);display:grid;place-items:center}
+.logo i svg{width:20px;height:20px;fill:#fff}
+h1{font-size:clamp(32px,6vw,52px);line-height:1.08;letter-spacing:-.03em;margin:28px 0 14px}
+h1 em{font-style:normal;color:var(--acc)}
+.lead{font-size:19px;color:var(--mute);max-width:620px;margin:0}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 20px;border-radius:12px;font-weight:700;text-decoration:none;border:1px solid var(--line);color:var(--ink);background:var(--card)}
+.btn.primary{background:var(--acc);border-color:var(--acc);color:#fff}
+.btn small{font-weight:500;opacity:.8}
+.sites{margin-top:22px;color:var(--mute);font-size:14px}
+section{padding:36px 0;border-top:1px solid var(--line)}
+h2{font-size:26px;letter-spacing:-.02em;margin:0 0 18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.card b{display:block;margin-bottom:4px}
+.card p{margin:0;color:var(--mute);font-size:15px}
+.ico{font-size:22px;display:block;margin-bottom:8px}
+ol{margin:0;padding-left:22px}
+ol li{margin:6px 0}
+code{background:var(--acc2);color:var(--acc);padding:2px 6px;border-radius:6px;font-size:14px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;overflow-x:auto;font-size:14px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.note{font-size:14px;color:var(--mute);margin-top:12px}
+footer{padding:30px 0 50px;color:var(--mute);font-size:14px;border-top:1px solid var(--line)}
+a{color:var(--acc)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <span class="logo"><i><svg viewBox="0 0 24 24"><path d="M12 3 2 12h3v9h5v-6h4v6h5v-9h3z"/></svg></i>FindHouseInNL</span>
+  <h1>Hollanda'da ev bulmanın<br><em>en hızlı</em> yolu.</h1>
+  <p class="lead">12 kiralık ilan sitesini tek uygulamada topluyor, oda / stüdyo / daire olarak filtreliyor
+    ve filtrene uyan yeni bir ilan düştüğü an haber veriyor.</p>
+  <div class="cta">
+    <a class="btn primary" href="FindHouseInNL.apk" download>⬇ Android APK'yı indir <small>~9 MB</small></a>
+    <a class="btn" href="#pc">💻 Bilgisayar sürümü</a>
+  </div>
+  <p class="sites">Pararius · Funda · Holland2Stay · Kamernet · HousingAnywhere · 123Wonen · HouseHunting ·
+    Rotsvast · Interhouse · vb&amp;t · IamExpat · Kamer.nl</p>
+</header>
+
+<section>
+  <h2>Neler yapıyor?</h2>
+  <div class="grid">
+    <div class="card"><span class="ico">🔎</span><b>Tek liste, 12 site</b><p>Aynı ev birden fazla sitede varsa tek kartta birleşir.</p></div>
+    <div class="card"><span class="ico">🎛</span><b>Akıllı filtreler</b><p>Tip, fiyat, m², site, taşınma tarihi ve kısa / uzun dönem (1+ yıl).</p></div>
+    <div class="card"><span class="ico">↕</span><b>Sıralama</b><p>En yeni, ucuzdan pahalıya, en büyük, en iyi €/m², en erken müsait.</p></div>
+    <div class="card"><span class="ico">🗺</span><b>Harita</b><p>İlanlar haritada fiyat etiketleriyle; dokun, ilana git.</p></div>
+    <div class="card"><span class="ico">🔔</span><b>Anında bildirim</b><p>Arka planda tarar, filtrene uyan yeni ilanı hemen bildirir.</p></div>
+    <div class="card"><span class="ico">📄</span><b>İlan açıklamaları</b><p>Açıklamalar okunur; tarih ve süre bilgisi otomatik çıkarılır.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>📱 Android'e kurulum</h2>
+  <ol>
+    <li>Yukarıdaki <b>Android APK'yı indir</b> düğmesine telefondan bas.</li>
+    <li>İnen dosyayı aç. "Bilinmeyen kaynaklardan yükleme" izni isterse izin ver.</li>
+    <li>Play Protect uyarı verirse <b>Yine de yükle</b> de (uygulama Play Store'da değil).</li>
+    <li>Uygulamayı aç, bildirim iznini ver, ⚙ Ayarlar'dan şehrini seç. İlk tarama kendiliğinden başlar.</li>
+  </ol>
+  <p class="note">Bir site "insan mısın" doğrulaması isterse uygulama içinde pencere açılır; adımı tamamlayınca tarama devam eder.</p>
+</section>
+
+<section id="pc">
+  <h2>💻 Bilgisayar sürümü (Windows)</h2>
+  <div class="two">
+    <div>
+      <ol>
+        <li><a href="https://www.python.org/downloads/">Python</a>'u kur (kurulumda <b>Add python.exe to PATH</b> kutusunu işaretle).</li>
+        <li>Bu sayfanın kodunu <a href="https://github.com/Ener001/FindhouseNL/archive/refs/heads/master.zip">ZIP olarak indir</a> ve bir klasöre çıkar.</li>
+        <li><code>config.example.yaml</code> dosyasını <code>config.yaml</code> adıyla kopyala; şehir ve bütçeni yaz.</li>
+        <li>Klasörde terminal açıp paketleri kur, sonra <b>FindHouseInNL Baslat.bat</b>'a çift tıkla.</li>
+      </ol>
+    </div>
+    <pre>py -m pip install -r requirements.txt
+py run.py serve</pre>
+  </div>
+  <p class="note">Arayüz tarayıcında <code>127.0.0.1:8000</code> adresinde açılır. Telegram bildirimi kurulumu için README'ye bak.</p>
+</section>
+
+<footer>
+  Kişisel kullanım için yapılmış bir proje. İlanlar ilgili sitelere aittir; her ilan kendi sitesine bağlantı verir. ·
+  <a href="https://github.com/Ener001/FindhouseNL">GitHub</a>
+</footer>
+</div>
+</body>
+</html>
