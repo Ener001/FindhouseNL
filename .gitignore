@@ -1,0 +1,11 @@
+# Kişisel / gizli — GitHub'a gitmesin
+config.yaml
+browser_profile/
+evbul.db
+evbul.db-journal
+debug/
+
+# Python
+__pycache__/
+*.pyc
+.venv/

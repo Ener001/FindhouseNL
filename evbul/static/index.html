@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EvBul</title>
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--ink:#1d1d1b;--mute:#6b6a65;--line:#e4e1d8;--acc:#e8590c;--acc2:#fff1e6;--ok:#2b8a3e}
+@media (prefers-color-scheme:dark){:root{--bg:#141413;--card:#1e1e1c;--ink:#ecebe6;--mute:#9a9890;--line:#2e2d2a;--acc:#ff8a3d;--acc2:#3a2414}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}
+header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:12px 16px}
+.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+h1{font-size:20px;margin:0;letter-spacing:-.02em}h1 span{color:var(--acc)}
+.meta{color:var(--mute);font-size:13px;flex:1}
+button,select,input{font:inherit;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:7px 10px}
+button{cursor:pointer}button.primary{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border-radius:999px;padding:6px 12px}.chip.on{background:var(--acc2);border-color:var(--acc);color:var(--acc);font-weight:600}
+.num{width:92px}input[type=search]{min-width:160px;flex:1}
+.sep{width:1px;height:24px;background:var(--line)}
+main{padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.img{aspect-ratio:16/10;background:var(--line) center/cover no-repeat;position:relative}
+.badge{position:absolute;top:8px;left:8px;background:var(--card);border-radius:8px;padding:2px 8px;font-size:12px;font-weight:600}
+.new{left:auto;right:8px;background:var(--ok);color:#fff}
+.body{padding:10px 12px 12px;display:flex;flex-direction:column;gap:4px;flex:1}
+.price{font-size:20px;font-weight:700}.price small{font-size:13px;color:var(--mute);font-weight:400}
+.title{font-weight:600;color:var(--ink);text-decoration:none}.title:hover{color:var(--acc)}
+.sub{color:var(--mute);font-size:13px}
+.row{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:8px}
+.src a{font-size:12px;color:var(--mute);margin-right:8px}
+.icons button{border:none;background:none;padding:4px 6px;font-size:17px}
+.facts{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
+.fact{font-size:12px;padding:2px 8px;border-radius:999px;background:var(--acc2);color:var(--acc)}
+.fact.mute{background:transparent;border:1px dashed var(--line);color:var(--mute)}
+details.desc{margin-top:6px;font-size:13px;color:var(--mute)}details.desc summary{cursor:pointer;color:var(--ink)}
+details.desc div{white-space:pre-line;max-height:260px;overflow:auto;margin-top:6px;line-height:1.5}
+label.inline{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--mute)}
+.empty{grid-column:1/-1;text-align:center;color:var(--mute);padding:60px 0}
+@media(max-width:600px){.sep{display:none}.num{width:80px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <h1>Ev<span>Bul</span></h1>
+    <div class="meta" id="meta">yükleniyor…</div>
+    <button class="primary" id="scrape">↻ Şimdi tara</button>
+  </div>
+  <div class="filters">
+    <div class="chips" id="types"></div><div class="sep"></div>
+    <input class="num" id="min_price" type="number" placeholder="€ min">
+    <input class="num" id="max_price" type="number" placeholder="€ maks">
+    <input class="num" id="min_area" type="number" placeholder="min m²">
+    <select id="city"><option value="">Tüm şehirler</option></select>
+    <select id="source"><option value="">Tüm siteler</option></select>
+    <select id="since"><option value="">Her zaman</option><option value="1">Son 1 saat</option><option value="24">Son 24 saat</option><option value="168">Son 7 gün</option></select>
+    <select id="sort"><option value="newest">En yeni</option><option value="price_asc">Ucuzdan pahalıya</option><option value="price_desc">Pahalıdan ucuza</option><option value="area_desc">En büyük</option><option value="ppm2">€/m² en iyi</option><option value="available">En erken müsait</option></select>
+    <label class="inline">Taşınma en geç <input type="date" id="available_by"></label>
+    <select id="stay"><option value="">Süre: hepsi</option><option value="long">Uzun dönem (1+ yıl)</option><option value="short">Kısa dönem (&lt;1 yıl)</option></select>
+    <label class="inline"><input type="checkbox" id="known_only"> Bilinmeyenleri gizle</label>
+    <button class="chip" id="fav">★ Favoriler</button>
+    <input type="search" id="q" placeholder="Sokak, posta kodu…">
+  </div>
+</header>
+<main id="list"></main>
+<script>
+const TYPES={room:"Oda",studio:"Stüdyo",apartment:"Daire",house:"Ev"};
+const $=id=>document.getElementById(id);
+const st={types:new Set(),fav:false};
+let saved={};try{saved=JSON.parse(localStorage.getItem("evbul")||"{}")}catch(e){}
+for(const[k,v]of Object.entries(TYPES)){const b=document.createElement("button");b.className="chip";b.textContent=v;b.dataset.t=k;
+  b.onclick=()=>{st.types.has(k)?st.types.delete(k):st.types.add(k);b.classList.toggle("on");load()};$("types").append(b)}
+(saved.types||[]).forEach(t=>{st.types.add(t);document.querySelector(`[data-t=${t}]`)?.classList.add("on")});
+const FIELDS=["min_price","max_price","min_area","since","sort","q","available_by","stay"];
+FIELDS.forEach(id=>{if(saved[id])$(id).value=saved[id];$(id).addEventListener("input",debounce(load,300))});
+$("known_only").checked=!!saved.known_only;$("known_only").onchange=load;
+$("fav").onclick=()=>{st.fav=!st.fav;$("fav").classList.toggle("on");load()};
+$("city").onchange=$("source").onchange=load;
+$("scrape").onclick=async()=>{await fetch("/api/scrape",{method:"POST"});$("scrape").textContent="Taranıyor…";poll()};
+function debounce(f,ms){let t;return()=>{clearTimeout(t);t=setTimeout(f,ms)}}
+function esc(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function ago(ts){const m=(Date.now()/1000-ts)/60;return m<60?`${Math.round(m)} dk önce`:m<1440?`${Math.round(m/60)} sa önce`:`${Math.round(m/1440)} gün önce`}
+async function load(){
+  const p=new URLSearchParams();
+  if(st.types.size)p.set("type",[...st.types].join(","));
+  for(const id of["min_price","max_price","min_area","q","sort","available_by","stay"])if($(id).value)p.set(id,$(id).value);
+  if($("known_only").checked)p.set("known_only","1");
+  if($("since").value)p.set("since_hours",$("since").value);
+  if($("city").value)p.set("city",$("city").value);
+  if($("source").value)p.set("source",$("source").value);
+  if(st.fav)p.set("favorites","1");
+  try{localStorage.setItem("evbul",JSON.stringify({types:[...st.types],known_only:$("known_only").checked,...Object.fromEntries(FIELDS.map(i=>[i,$(i).value]))}))}catch(e){}
+  const rows=await (await fetch("/api/listings?"+p)).json();
+  $("list").innerHTML=rows.length?rows.map(card).join(""):`<div class="empty">Bu filtrelere uyan ilan yok.<br>Filtreleri gevşet ya da “Şimdi tara”ya bas.</div>`;
+}
+function card(r){
+  const isNew=Date.now()/1000-r.first_seen<86400, ppm=r.price&&r.area_m2?Math.round(r.price/r.area_m2):null;
+  const sub=[r.area_m2&&r.area_m2+" m²",r.rooms&&r.rooms+" oda",r.furnished&&({furnished:"Eşyalı",upholstered:"Yarı eşyalı",shell:"Eşyasız"}[r.furnished]),r.postcode,r.city].filter(Boolean).join(" · ");
+  const links=[{source:r.source,url:r.url},...(r.also_on||[])].map(x=>`<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.source)} ↗</a>`).join("");
+  return `<div class="card"><div class="img" style="${r.image?`background-image:url('${esc(r.image)}')`:""}">
+  <span class="badge">${TYPES[r.type]||"?"}</span>${isNew?'<span class="badge new">YENİ</span>':""}</div>
+  <div class="body"><div class="price">${r.price?"€"+r.price.toLocaleString("nl-NL"):"Fiyat yok"} <small>/ay${ppm?` · €${ppm}/m²`:""}</small></div>
+  <a class="title" href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.title)}</a><div class="sub">${esc(sub)}</div>
+  <div class="facts">${avail(r)}${stayTxt(r)}</div>
+  ${r.description?`<details class="desc"><summary>Açıklama</summary><div>${esc(r.description)}</div></details>`:(r.detail_at?"":'<div class="sub" style="font-size:12px">açıklama sırada…</div>')}
+  <div class="row"><span class="src">${links}<span class="sub">${ago(r.first_seen)}</span></span>
+  <span class="icons"><button title="Favori" onclick="flag('${r.uid}','favorite',${r.favorite?0:1})">${r.favorite?"★":"☆"}</button><button title="Gizle" onclick="flag('${r.uid}','hidden',1)">✕</button></span></div></div></div>`}
+const AY=["Oca","Şub","Mar","Nis","May","Haz","Tem","Ağu","Eyl","Eki","Kas","Ara"];
+function avail(r){if(!r.available_from)return '<span class="fact mute">📅 tarih ?</span>';
+  const d=new Date(r.available_from+"T00:00:00"),t=new Date();t.setHours(0,0,0,0);
+  return `<span class="fact">📅 ${d<=t?"Hemen":d.getDate()+" "+AY[d.getMonth()]+" "+d.getFullYear()}</span>`}
+function stayTxt(r){const mn=r.min_months,mx=r.max_months;
+  if(!r.stay&&!mn&&!mx)return '<span class="fact mute">⏳ süre ?</span>';
+  let t=r.stay==="long"?"Uzun dönem":r.stay==="short"?"Kısa dönem":"Süre";
+  if(mn&&mx&&mn===mx)t+=` · ${mn} ay`;else if(mn)t+=` · min ${mn} ay`;else if(mx)t+=` · maks ${mx} ay`;
+  return `<span class="fact">⏳ ${t}</span>`}
+async function flag(uid,f,v){await fetch("/api/flag",{method:"POST",body:JSON.stringify({uid,flag:f,value:v})});load()}
+async function stats(){
+  const s=await (await fetch("/api/stats")).json();
+  const fill=(id,vals)=>{const sel=$(id),cur=sel.value;sel.length=1;vals.forEach(v=>sel.add(new Option(v,v)));sel.value=cur};
+  fill("city",s.cities);fill("source",s.sources);
+  let m=`${s.total} ilan`+(s.last_update?` · son güncelleme ${ago(s.last_update)}`:"");
+  if(s.last_report){m+=` · son tur: ${s.last_report.new} yeni`;const e=Object.keys(s.last_report.errors);if(e.length)m+=` · ⚠ ${e.join(", ")}`}
+  $("meta").textContent=m;$("scrape").textContent=s.scraping?"Taranıyor…":"↻ Şimdi tara";return s}
+async function poll(){const s=await stats();if(s.scraping)setTimeout(poll,3000);else load()}
+stats().then(load);setInterval(()=>stats().then(load),60000);
+</script>
+</body>
+</html>

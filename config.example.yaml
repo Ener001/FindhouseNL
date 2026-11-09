@@ -1,0 +1,99 @@
+# Bu dosyayı config.yaml adıyla kopyala ve kendi ayarlarını gir.
+# ---- Nerede arıyorsun? ----
+cities: [Eindhoven]
+max_pages: 2              # site başına, şehir başına sayfa
+interval_minutes: 10      # watch / serve modunda tarama aralığı
+
+# ---- Tarayıcı modu ----
+# browser: kendi Chrome/Edge'inle açar (önerilen). http: tarayıcısız, ama siteler engelliyor.
+mode: browser
+browser:
+  port: 9222                      # EvBul Chrome penceresinin bağlantı portu
+  challenge_wait_minutes: 5       # doğrulama çıkınca seni ne kadar beklesin
+  profile_dir: browser_profile    # çerezler burada saklanır
+
+# ---- Bildirim filtresi (arayüzde ayrıca istediğin gibi filtreleyebilirsin) ----
+filters:
+  types: [room, studio, apartment]   # room | studio | apartment | house
+  min_price: 0
+  max_price: 1600
+  min_area: 20
+  # min_rooms: 1
+  # furnished: [furnished, upholstered]   # furnished | upholstered | shell
+  # available_by: 2027-01-31     # bu tarihe kadar taşınabileceğim ilanlar
+  # stay: [long]                 # long = 1+ yıl / süresiz, short = 1 yıldan kısa
+  # known_only: false            # true: tarihi/süresi bilinmeyen ilanlar için bildirim gelmesin
+  exclude_words: [anti-kraak, "students only", "only students"]
+
+# ---- İlan açıklamaları ----
+details:
+  enabled: true
+  per_round: 25          # her turda en fazla kaç ilanın detay sayfası açılsın
+
+# ---- Yapay zekâ (isteğe bağlı) ----
+# Kuralların çözemediği ilanlarda açıklamayı Claude okur. console.anthropic.com'dan anahtar al.
+ai:
+  api_key: ""
+  model: claude-haiku-5-5
+
+# ---- Telegram (README'de 2 dakikalık kurulum var) ----
+telegram:
+  bot_token: ""
+  chat_id: ""
+
+# ---- Kaynaklar ----
+sources:
+  pararius:
+    enabled: true
+  funda:
+    enabled: true
+  holland2stay:
+    enabled: true          # beta
+  kamernet:
+    enabled: true
+    url: "https://kamernet.nl/en/for-rent/properties-{city}"
+    link_pattern: "/for-rent/(room|studio|apartment|anti-squat)-[a-z-]+/[^/]+/[a-z-]+-\\d+"
+    title_regex: "(?:New\\s+|React for free\\s+|Top ad\\s+)*([^,€]+?)\\s*,\\s*{city}"
+    strict_city: true
+  housinganywhere:
+    enabled: true
+    url: "https://housinganywhere.com/s/{city}--netherlands"
+    link_pattern: "/(room|apartment|studio)/[a-z0-9]+/"
+    title_regex: "((?:Room|Studio|Apartment|House|Building)[^,€]*? in [^,€]+?),\\s*{city}"
+    strict_city: true
+  123wonen:
+    enabled: true
+    url: "https://www.123wonen.nl/huurwoningen/in/{city}"
+    link_pattern: "/huur/[a-z-]+/[a-z-]+/.+-\\d+"
+    title: ".pand-address"
+    strict_city: true
+  househunting:
+    enabled: true          # sayfa tüm şehirleri karışık gösteriyor, Eindhoven olanları süzüyoruz
+    url: "https://househunting.nl/en/housing-offer/"
+    link_pattern: "/woningaanbod/[^/?#]+-\\d+/?$"
+    strict_city: true
+  # ---- Emlakçılar (ilan linkleri otomatik bulunur) ----
+  rotsvast:
+    enabled: true
+    url: "https://www.rotsvast.nl/en/huren/"
+    strict_city: true
+  interhouse:
+    enabled: true
+    url: "https://interhouse.nl/en/vastgoed/huur/{city}/"
+    strict_city: true
+  vbt:
+    enabled: true
+    url: "https://www.vbtverhuurmakelaars.nl/en/woningen"
+    strict_city: true
+  iamexpat:
+    enabled: true
+    url: "https://www.iamexpat.nl/housing/rental-properties/{city}"
+    strict_city: true
+  kamernl:
+    enabled: true
+    url: "https://kamer.nl/en/rent/kamer-{city}"
+    strict_city: true
+  findify:
+    enabled: false         # liste sayfasının adresini buraya koy
+    url: ""
+    link_pattern: "/(huur|rent|listing|woning)"
