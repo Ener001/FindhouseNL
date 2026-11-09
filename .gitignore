@@ -4,6 +4,7 @@ browser_profile/
 evbul.db
 evbul.db-journal
 debug/
+.version
 
 # Python
 __pycache__/

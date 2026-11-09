@@ -37,6 +37,8 @@ main{padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(280
 details.desc{margin-top:6px;font-size:13px;color:var(--mute)}details.desc summary{cursor:pointer;color:var(--ink)}
 details.desc div{white-space:pre-line;max-height:260px;overflow:auto;margin-top:6px;line-height:1.5}
 label.inline{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--mute)}
+.upd{display:none;margin:10px 16px 0;padding:10px 14px;border-radius:12px;background:var(--acc2);border:1px solid var(--acc);align-items:center;gap:12px;flex-wrap:wrap}
+.upd b{color:var(--acc)}.upd span{flex:1;min-width:200px}
 .empty{grid-column:1/-1;text-align:center;color:var(--mute);padding:60px 0}
 @media(max-width:600px){.sep{display:none}.num{width:80px}}
 </style>
@@ -64,6 +66,7 @@ label.inline{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--
     <input type="search" id="q" placeholder="Sokak, posta kodu…">
   </div>
 </header>
+<div class="upd" id="upd"><span><b>Yeni sürüm var!</b> <span id="updmsg"></span></span><button class="primary" id="updbtn">⬇ Güncelle</button></div>
 <main id="list"></main>
 <script>
 const TYPES={room:"Oda",studio:"Stüdyo",apartment:"Daire",house:"Ev"};
@@ -125,7 +128,13 @@ async function stats(){
   if(s.last_report){m+=` · son tur: ${s.last_report.new} yeni`;const e=Object.keys(s.last_report.errors);if(e.length)m+=` · ⚠ ${e.join(", ")}`}
   $("meta").textContent=m;$("scrape").textContent=s.scraping?"Taranıyor…":"↻ Şimdi tara";return s}
 async function poll(){const s=await stats();if(s.scraping)setTimeout(poll,3000);else load()}
-stats().then(load);setInterval(()=>stats().then(load),60000);
+async function checkUpdate(){try{const u=await (await fetch("/api/update")).json();
+  if(u.available){$("updmsg").textContent=u.message||"";$("upd").style.display="flex";}}catch(e){}}
+$("updbtn").onclick=async()=>{$("updbtn").disabled=true;$("updbtn").textContent="İndiriliyor…";
+  const r=await (await fetch("/api/update",{method:"POST"})).json();
+  $("updmsg").textContent=r.ok?"Güncellendi! Bu pencereyi ve siyah FindHouseInNL penceresini kapatıp programı tekrar aç.":"Olmadı: "+(r.error||"");
+  $("updbtn").style.display="none";};
+stats().then(load);checkUpdate();setInterval(()=>stats().then(load),60000);setInterval(checkUpdate,30*60000);
 </script>
 </body>
 </html>

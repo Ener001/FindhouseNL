@@ -8,6 +8,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
+from . import updater
 from .db import DB
 
 log = logging.getLogger("evbul")
@@ -53,6 +54,9 @@ def serve(cfg: dict, db: DB, wake: threading.Event, state: dict, host="127.0.0.1
                     max_age_hours=cfg.get("keep_hours", 48),
                     available_by=one("available_by"), stay=many("stay"),
                     known_only=one("known_only") == "1"))
+            elif u.path == "/api/update":
+                info = updater.check()
+                self._json({"available": bool(info), **(info or {})})
             elif u.path == "/api/stats":
                 self._json({**db.stats(), "scraping": state["scraping"],
                             "last_report": state["last_report"],
@@ -70,6 +74,11 @@ def serve(cfg: dict, db: DB, wake: threading.Event, state: dict, host="127.0.0.1
             elif u.path == "/api/scrape":
                 wake.set()
                 self._json({"started": True})
+            elif u.path == "/api/update":
+                try:
+                    self._json(updater.apply_update())
+                except Exception as e:  # noqa: BLE001
+                    self._json({"ok": False, "error": str(e)[:200]})
             else:
                 self._json({"error": "not found"}, 404)
 

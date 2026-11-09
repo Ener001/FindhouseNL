@@ -1,0 +1,8 @@
+{
+  "android": {
+    "versionCode": 2,
+    "versionName": "0.2",
+    "url": "https://ener001.github.io/FindhouseNL/FindHouseInNL.apk",
+    "notes": "Akıcı harita, sıralama, yeni isim ve otomatik güncelleme bildirimi."
+  }
+}

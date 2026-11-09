@@ -12,7 +12,8 @@ import logging
 import random
 import threading
 
-from evbul.core import load_config, make_fetcher, notify, run_once
+from evbul import updater
+from evbul.core import load_config, make_fetcher, notify, run_once, send_text
 from evbul.db import DB
 from evbul.models import Listing
 
@@ -39,6 +40,10 @@ def worker(cfg, db_path, wake: threading.Event, state: dict, interval_minutes):
                     fetcher = None
             finally:
                 state["scraping"] = False
+            info = updater.check()
+            if info and updater.should_announce(info):
+                send_text(cfg, "🆕 FindHouseInNL'in yeni sürümü çıktı: " + info["message"] +
+                          "\nArayüzdeki \"Güncelle\" düğmesine bas (http://127.0.0.1:8000).")
             timeout = interval_minutes * 60 * random.uniform(0.85, 1.15) if interval_minutes else None
             wake.wait(timeout)
             wake.clear()
