@@ -15,7 +15,21 @@ log = logging.getLogger("evbul")
 
 
 def load_config(path="config.yaml") -> dict:
-    return yaml.safe_load(Path(path).read_text(encoding="utf-8")) or {}
+    cfg = yaml.safe_load(Path(path).read_text(encoding="utf-8")) or {}
+    # Yeni sürümle gelen kaynaklar eski config.yaml'larda yok: örnek dosyadan eksik olanları ekle.
+    # Kullanıcının kendi yazdığı/kapattığı kaynaklara dokunulmaz.
+    example = Path(path).with_name("config.example.yaml")
+    try:
+        defaults = (yaml.safe_load(example.read_text(encoding="utf-8")) or {}).get("sources") or {}
+    except OSError:
+        defaults = {}
+    srcs = cfg.get("sources")
+    if srcs is None:
+        cfg["sources"] = dict(defaults)
+    elif isinstance(srcs, dict):
+        for k, v in defaults.items():
+            srcs.setdefault(k, v)
+    return cfg
 
 
 def _g(item, k):

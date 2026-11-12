@@ -54,6 +54,8 @@ class Generic(Source):
             pairs, seen = [], set()
             for a in soup.find_all("a", href=True):
                 href = urljoin(page_url, a["href"]).split("#")[0]
+                if o.get("strip_query"):
+                    href = href.split("?")[0]
                 if pat.search(href) and href not in seen and href.rstrip("/") != page_url.rstrip("/"):
                     seen.add(href)
                     pairs.append((_card_of(a, pat, page_url), a))
@@ -89,6 +91,8 @@ class Generic(Source):
             if o.get("strict_city") and city.lower() not in blob.lower():
                 continue
             full = urljoin(page_url, a["href"])
+            if o.get("strip_query"):      # takip parametreleri her yüklemede değişiyor (ör. Marktplaats)
+                full = full.split("?")[0]
             ex = rule_extract(blob)
             res.append(Listing(
                 available_from=ex["available_from"], min_months=ex["min_months"],

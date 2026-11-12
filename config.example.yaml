@@ -93,6 +93,52 @@ sources:
     enabled: true
     url: "https://kamer.nl/en/rent/kamer-{city}"
     strict_city: true
+  # ---- 2026-11 eklenenler ----
+  huurwoningen:
+    enabled: true
+    url: "https://www.huurwoningen.nl/in/{city}/"
+    link_pattern: "/huren/[a-z-]+/[0-9a-f]{7,8}/[a-z0-9-]+/?$"
+    strict_city: true
+  huurzone:
+    enabled: true
+    url: "https://www.huurzone.nl/en/rental-homes/{city}"
+    link_pattern: "/rental-properties/[a-z-]+/[a-z-]+/\\d+/?$"
+    strict_city: false     # sayfa zaten şehre göre süzülü
+  rentnl:
+    enabled: true
+    url: "https://www.rent.nl/en/housing/noord-brabant/{city}/"
+    link_pattern: "/en/property/[a-z0-9-]+/[A-Za-z0-9_-]+/?$"
+    title_regex: "^(?:New\\s+)?(.+?)\\s+{city}\\b"
+    strict_city: true
+  directwonen:
+    enabled: true
+    url: "https://directwonen.nl/huurwoningen-huren/{city}"
+    link_pattern: "/huurwoningen-huren/[a-z-]+/[a-z0-9-]+/[a-z]+-\\d+/?$"
+    strict_city: false
+  myhospi:
+    enabled: true          # ev sahibinin yanında oda (hospita)
+    url: "https://myhospi.nl/en/rooms/{city}"
+    link_pattern: "/kamers/[a-z-]+/\\d+/?$"
+    strict_city: false
+  marktplaats:
+    enabled: true
+    url: "https://www.marktplaats.nl/l/huizen-en-kamers/huizen-te-huur/q/{city}/"
+    link_pattern: "/v/huizen-en-kamers/(huizen|kamers)-te-huur/a\\d+-"
+    title_regex: "Favorieten\\s+(?:Meer op onze site\\s+)?(?:Te huur:\\s*)?([^€]+?)\\s*€"
+    strip_query: true
+    strict_city: true
+  marktplaats_kamers:
+    enabled: true
+    url: "https://www.marktplaats.nl/l/huizen-en-kamers/kamers-te-huur/q/{city}/"
+    link_pattern: "/v/huizen-en-kamers/(huizen|kamers)-te-huur/a\\d+-"
+    title_regex: "Favorieten\\s+(?:Meer op onze site\\s+)?(?:Te huur:\\s*)?([^€]+?)\\s*€"
+    strip_query: true
+    strict_city: true
+  stoit:
+    enabled: true
+    url: "https://www.stoit.nl/woningen/"
+    link_pattern: "/woningen/[a-z0-9-]+/?$"
+    strict_city: true
   findify:
     enabled: false         # liste sayfasının adresini buraya koy
     url: ""
