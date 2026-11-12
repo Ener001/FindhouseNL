@@ -4,87 +4,252 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>FindHouseInNL</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23e8590c'/%3E%3Cpath d='M8 15.5 16 9l8 6.5V24h-5.5v-5h-5v5H8z' fill='%23fff'/%3E%3C/svg%3E">
 <style>
-:root{--bg:#f6f4ef;--card:#fff;--ink:#1d1d1b;--mute:#6b6a65;--line:#e4e1d8;--acc:#e8590c;--acc2:#fff1e6;--ok:#2b8a3e}
-@media (prefers-color-scheme:dark){:root{--bg:#141413;--card:#1e1e1c;--ink:#ecebe6;--mute:#9a9890;--line:#2e2d2a;--acc:#ff8a3d;--acc2:#3a2414}}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}
-header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:12px 16px}
-.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-h1{font-size:20px;margin:0;letter-spacing:-.02em}h1 span{color:var(--acc)}
-.meta{color:var(--mute);font-size:13px;flex:1}
-button,select,input{font:inherit;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:7px 10px}
-button{cursor:pointer}button.primary{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
-.filters{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}
-.chips{display:flex;gap:6px;flex-wrap:wrap}
-.chip{border-radius:999px;padding:6px 12px}.chip.on{background:var(--acc2);border-color:var(--acc);color:var(--acc);font-weight:600}
-.num{width:92px}input[type=search]{min-width:160px;flex:1}
-.sep{width:1px;height:24px;background:var(--line)}
-main{padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
-.img{aspect-ratio:16/10;background:var(--line) center/cover no-repeat;position:relative}
-.badge{position:absolute;top:8px;left:8px;background:var(--card);border-radius:8px;padding:2px 8px;font-size:12px;font-weight:600}
-.new{left:auto;right:8px;background:var(--ok);color:#fff}
-.body{padding:10px 12px 12px;display:flex;flex-direction:column;gap:4px;flex:1}
-.price{font-size:20px;font-weight:700}.price small{font-size:13px;color:var(--mute);font-weight:400}
-.title{font-weight:600;color:var(--ink);text-decoration:none}.title:hover{color:var(--acc)}
-.sub{color:var(--mute);font-size:13px}
-.row{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:8px}
-.src a{font-size:12px;color:var(--mute);margin-right:8px}
-.icons button{border:none;background:none;padding:4px 6px;font-size:17px}
-.facts{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
-.fact{font-size:12px;padding:2px 8px;border-radius:999px;background:var(--acc2);color:var(--acc)}
-.fact.mute{background:transparent;border:1px dashed var(--line);color:var(--mute)}
-details.desc{margin-top:6px;font-size:13px;color:var(--mute)}details.desc summary{cursor:pointer;color:var(--ink)}
-details.desc div{white-space:pre-line;max-height:260px;overflow:auto;margin-top:6px;line-height:1.5}
-label.inline{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--mute)}
-.upd{display:none;margin:10px 16px 0;padding:10px 14px;border-radius:12px;background:var(--acc2);border:1px solid var(--acc);align-items:center;gap:12px;flex-wrap:wrap}
+:root{
+  --bg:#f5f3ee;--panel:#fff;--panel2:#faf8f4;--ink:#1c1b19;--mute:#6b6963;--faint:#a5a29a;--line:#e6e2d8;
+  --acc:#e8590c;--acc-ink:#fff;--acc-soft:#fff0e5;--ok:#2b8a3e;--ok-soft:#e6f4ea;--warn:#b35c00;
+  --shadow:0 1px 2px rgba(28,27,25,.05),0 4px 16px rgba(28,27,25,.06);--shadow-hi:0 2px 4px rgba(28,27,25,.06),0 12px 32px rgba(28,27,25,.12);
+  --r:16px;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#121211;--panel:#1b1b19;--panel2:#20201d;--ink:#eeede8;--mute:#a3a198;--faint:#6e6c65;--line:#2d2c28;
+  --acc:#ff8a3d;--acc-ink:#1b1209;--acc-soft:#33200f;--ok:#5cc275;--ok-soft:#14291a;--warn:#ffb35c;
+  --shadow:0 1px 2px rgba(0,0,0,.3);--shadow-hi:0 8px 28px rgba(0,0,0,.45);
+}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button,select,input{font:inherit;color:inherit}
+.wrap{max-width:1280px;margin:0 auto;padding:0 24px}
+
+/* ---- üst çubuk ---- */
+.nav{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:16px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo{width:34px;height:34px;border-radius:10px;background:var(--acc);display:grid;place-items:center;box-shadow:0 2px 8px color-mix(in srgb,var(--acc) 40%,transparent)}
+.brand b{font-size:18px;letter-spacing:-.02em}.brand b span{color:var(--acc)}
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--mute);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:5px 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:46vw}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none}
+.dot.live{background:var(--acc);animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--acc) 60%,transparent)}50%{box-shadow:0 0 0 6px transparent}}
+.grow{flex:1}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:9px 16px;cursor:pointer;font-weight:600;transition:transform .12s,box-shadow .12s,background .12s}
+.btn:hover{box-shadow:var(--shadow)}.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--mute);font-weight:500;padding:8px 10px}
+.btn.ghost:hover{color:var(--ink);background:var(--panel)}
+.btn:disabled{opacity:.6;cursor:default}
+.spin{width:14px;height:14px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:rot .8s linear infinite;display:none}
+.busy .spin{display:inline-block}.busy .ico{display:none}
+@keyframes rot{to{transform:rotate(360deg)}}
+
+/* ---- karşılama ---- */
+.hero{padding:36px 0 8px}
+.hero h1{font-size:clamp(26px,3.4vw,38px);line-height:1.15;letter-spacing:-.03em;margin:0 0 8px;font-weight:700}
+.hero h1 em{font-style:normal;color:var(--acc)}
+.hero p{margin:0;color:var(--mute);font-size:16px;max-width:640px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:24px 0 8px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow)}
+.stat .k{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute);font-weight:600}
+.stat .v{font-size:28px;font-weight:700;letter-spacing:-.02em;margin-top:2px;font-variant-numeric:tabular-nums}
+.stat .s{font-size:13px;color:var(--faint);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stat.hl .v{color:var(--acc)}
+
+/* ---- başlarken ---- */
+.onboard{display:none;margin:20px 0 4px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:22px 24px;box-shadow:var(--shadow)}
+.onboard h2{margin:0 0 4px;font-size:18px}.onboard>p{margin:0 0 16px;color:var(--mute)}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.step{display:flex;gap:12px;align-items:flex-start;background:var(--panel2);border-radius:12px;padding:14px}
+.step i{flex:none;width:28px;height:28px;border-radius:50%;background:var(--acc-soft);color:var(--acc);display:grid;place-items:center;font-style:normal;font-weight:700;font-size:14px}
+.step b{display:block;font-size:14px}.step span{font-size:13px;color:var(--mute)}
+
+/* ---- güncelleme ---- */
+.upd{display:none;margin:20px 0 0;padding:12px 16px;border-radius:14px;background:var(--acc-soft);border:1px solid color-mix(in srgb,var(--acc) 45%,transparent);align-items:center;gap:12px;flex-wrap:wrap}
 .upd b{color:var(--acc)}.upd span{flex:1;min-width:200px}
-.empty{grid-column:1/-1;text-align:center;color:var(--mute);padding:60px 0}
-@media(max-width:600px){.sep{display:none}.num{width:80px}}
+
+/* ---- filtreler ---- */
+.layout{display:grid;grid-template-columns:280px minmax(0,1fr);gap:24px;align-items:start;padding:24px 0 48px}
+.side{position:sticky;top:84px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);max-height:calc(100vh - 104px);overflow:auto}
+.side h3{display:flex;justify-content:space-between;align-items:center;margin:0 0 14px;font-size:15px}
+.side h3 button{border:0;background:none;color:var(--acc);font-size:13px;font-weight:600;cursor:pointer;padding:0}
+.grp{margin-bottom:18px}
+.grp>label:not(.check),.lbl{display:block;font-size:12px;font-weight:600;color:var(--mute);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:6px 12px;font-size:14px;cursor:pointer;transition:.12s}
+.chip:hover{border-color:var(--faint)}
+.chip.on{background:var(--acc-soft);border-color:var(--acc);color:var(--acc);font-weight:600}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.field{width:100%;border:1px solid var(--line);background:var(--panel2);border-radius:10px;padding:9px 11px;outline:none;transition:border-color .12s,box-shadow .12s}
+.field:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-soft)}
+select.field{cursor:pointer}
+.check{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--ink);cursor:pointer}
+.check input{width:16px;height:16px;accent-color:var(--acc)}
+
+/* ---- sonuçlar ---- */
+.bar{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.bar h2{margin:0;font-size:20px;letter-spacing:-.02em}
+.bar .count{color:var(--mute);font-size:14px}
+.search{position:relative;flex:1;min-width:200px;max-width:380px}
+.search input{padding-left:36px}
+.search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--faint)}
+.bar select{width:auto}
+.filterbtn{display:none}
+.scrim{display:none}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);transition:transform .15s,box-shadow .15s}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shadow-hi)}
+.img{aspect-ratio:16/10;background:var(--panel2) center/cover no-repeat;position:relative;display:block}
+.img.none{display:grid;place-items:center;color:var(--faint)}
+.badge{position:absolute;top:10px;left:10px;background:color-mix(in srgb,var(--panel) 92%,transparent);backdrop-filter:blur(6px);border-radius:8px;padding:3px 9px;font-size:12px;font-weight:600}
+.badge.new{left:auto;right:10px;background:var(--ok);color:#fff}
+.fav{position:absolute;bottom:10px;right:10px;width:34px;height:34px;border-radius:50%;border:0;background:color-mix(in srgb,var(--panel) 92%,transparent);cursor:pointer;font-size:16px;display:grid;place-items:center;box-shadow:var(--shadow)}
+.fav.on{color:var(--acc)}
+.body{padding:14px 16px 14px;display:flex;flex-direction:column;gap:4px;flex:1}
+.price{font-size:22px;font-weight:700;letter-spacing:-.02em}.price small{font-size:13px;color:var(--mute);font-weight:500;letter-spacing:0}
+.title{font-weight:600;text-decoration:none;line-height:1.35}.title:hover{color:var(--acc)}
+.sub{color:var(--mute);font-size:13px}
+.facts{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.fact{font-size:12px;padding:3px 9px;border-radius:999px;background:var(--acc-soft);color:var(--acc);font-weight:500}
+.fact.ok{background:var(--ok-soft);color:var(--ok)}
+.fact.mute{background:transparent;border:1px dashed var(--line);color:var(--faint)}
+details.desc{margin-top:8px;font-size:13px;color:var(--mute)}
+details.desc summary{cursor:pointer;color:var(--ink);font-weight:500;list-style:none}
+details.desc summary::before{content:"▸ ";color:var(--faint)}details.desc[open] summary::before{content:"▾ "}
+details.desc div{white-space:pre-line;max-height:240px;overflow:auto;margin-top:6px;line-height:1.55}
+.foot{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:12px;border-top:1px solid var(--line);margin-top:12px;gap:8px}
+.src{display:flex;gap:6px;flex-wrap:wrap;align-items:center;min-width:0}
+.src a{font-size:12px;font-weight:600;text-decoration:none;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:2px 7px}
+.src a:hover{border-color:var(--acc);color:var(--acc)}
+.when{font-size:12px;color:var(--faint);white-space:nowrap}
+.hide{border:0;background:none;color:var(--faint);cursor:pointer;font-size:12px;padding:2px 4px}.hide:hover{color:var(--ink)}
+.skel{background:linear-gradient(90deg,var(--panel2),var(--line),var(--panel2));background-size:200% 100%;animation:sh 1.2s ease-in-out infinite;border-radius:8px}
+@keyframes sh{to{background-position:-200% 0}}
+.empty{grid-column:1/-1;text-align:center;padding:56px 20px;background:var(--panel);border:1px dashed var(--line);border-radius:var(--r)}
+.empty h3{margin:12px 0 4px;font-size:18px}.empty p{margin:0 0 16px;color:var(--mute)}
+footer{border-top:1px solid var(--line);color:var(--faint);font-size:13px}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:20px 24px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);opacity:0;background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:12px;font-size:14px;transition:.25s;pointer-events:none;z-index:50}
+.toast.show{opacity:1;transform:translateX(-50%)}
+
+@media(max-width:1000px){
+  .layout{grid-template-columns:1fr}
+  .side{position:fixed;inset:0 auto 0 0;width:min(320px,88vw);max-height:none;border-radius:0 var(--r) var(--r) 0;z-index:40;transform:translateX(-105%);transition:transform .25s}
+  .side.open{transform:none}
+  .filterbtn{display:inline-flex}
+  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:35;display:none}.scrim.open{display:block}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .steps{grid-template-columns:1fr}
+}
+@media(max-width:600px){.wrap{padding:0 16px}.pill{display:none}.hero{padding-top:24px}.stat .v{font-size:24px}}
 </style>
 </head>
 <body>
-<header>
-  <div class="top">
-    <h1>FindHouse<span>InNL</span></h1>
-    <div class="meta" id="meta">yükleniyor…</div>
-    <button class="primary" id="scrape">↻ Şimdi tara</button>
+<nav class="nav"><div class="wrap">
+  <a class="brand" href="#"><span class="logo"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M3 11.2 12 4l9 7.2V20h-6.2v-5.5H9.2V20H3z"/></svg></span><b>FindHouse<span>InNL</span></b></a>
+  <span class="pill" id="pill"><span class="dot" id="dot"></span><span id="meta">Bağlanıyor…</span></span>
+  <span class="grow"></span>
+  <button class="btn primary" id="scrape"><span class="spin"></span><span class="ico">↻</span><span id="scrapeTxt">Şimdi tara</span></button>
+</div></nav>
+
+<div class="wrap">
+  <section class="hero">
+    <h1><span id="hello">Merhaba</span> 👋<br><em id="heroCity">Eindhoven</em>'da yeni evin seni bekliyor.</h1>
+    <p>Pararius, Funda, Kamernet ve diğer sitelerdeki kiralık ilanlar tek yerde. Tekrarlar ayıklanır, açıklamalar okunur, yeni ilan çıkınca haber verilir.</p>
+    <div class="stats">
+      <div class="stat"><div class="k">Toplam ilan</div><div class="v" id="sTotal">–</div><div class="s" id="sTotalSub">aktif ilanlar</div></div>
+      <div class="stat hl"><div class="k">Son 24 saatte</div><div class="v" id="sNew">–</div><div class="s">yeni çıkan ilan</div></div>
+      <div class="stat"><div class="k">En uygun fiyat</div><div class="v" id="sMin">–</div><div class="s" id="sMinSub">filtrelerine göre</div></div>
+      <div class="stat"><div class="k">Takip edilen site</div><div class="v" id="sSrc">–</div><div class="s" id="sSrcSub">her 10 dk taranır</div></div>
+    </div>
+  </section>
+
+  <section class="onboard" id="onboard">
+    <h2>Başlayalım 🚀</h2>
+    <p>Henüz ilan yok. İlk taramayı başlat, gerisini FindHouseInNL halleder.</p>
+    <div class="steps">
+      <div class="step"><i>1</i><div><b>“Şimdi tara”ya bas</b><span>Ayrı bir Chrome penceresi açılır ve siteleri sırayla gezer.</span></div></div>
+      <div class="step"><i>2</i><div><b>Doğrulama çıkarsa çöz</b><span>“Robot değilim” gibi bir kutu görürsen bir kere tıkla; tarayıcı bunu hatırlar.</span></div></div>
+      <div class="step"><i>3</i><div><b>Arkana yaslan</b><span>İlanlar burada belirir. Telegram'ı kurarsan yenileri telefonuna gelir.</span></div></div>
+    </div>
+  </section>
+
+  <div class="upd" id="upd"><span><b>Yeni sürüm hazır.</b> <span id="updmsg"></span></span><button class="btn primary" id="updbtn">⬇ Güncelle</button></div>
+
+  <div class="layout">
+    <aside class="side" id="side">
+      <h3>Filtreler <button id="reset">Temizle</button></h3>
+      <div class="grp"><span class="lbl">Ev tipi</span><div class="chips" id="types"></div></div>
+      <div class="grp"><span class="lbl">Aylık kira (€)</span><div class="two">
+        <input class="field" id="min_price" type="number" min="0" placeholder="En az">
+        <input class="field" id="max_price" type="number" min="0" placeholder="En çok"></div></div>
+      <div class="grp"><label for="min_area">En az alan (m²)</label><input class="field" id="min_area" type="number" min="0" placeholder="örn. 25"></div>
+      <div class="grp"><label for="available_by">En geç taşınma tarihi</label><input class="field" type="date" id="available_by"></div>
+      <div class="grp"><label for="stay">Kira süresi</label><select class="field" id="stay"><option value="">Fark etmez</option><option value="long">Uzun dönem (1+ yıl)</option><option value="short">Kısa dönem (1 yıldan az)</option></select></div>
+      <div class="grp"><label for="since">Yayın zamanı</label><select class="field" id="since"><option value="">Her zaman</option><option value="1">Son 1 saat</option><option value="24">Son 24 saat</option><option value="168">Son 7 gün</option></select></div>
+      <div class="grp"><label for="source">Site</label><select class="field" id="source"><option value="">Tüm siteler</option></select></div>
+      <div class="grp"><label for="city">Şehir</label><select class="field" id="city"><option value="">Tüm şehirler</option></select></div>
+      <div class="grp" style="display:grid;gap:10px">
+        <label class="check"><input type="checkbox" id="known_only"> Tarihi/süresi belli olanlar</label>
+        <label class="check"><input type="checkbox" id="fav"> Sadece favorilerim ★</label>
+      </div>
+    </aside>
+    <div class="scrim" id="scrim"></div>
+
+    <section>
+      <div class="bar">
+        <button class="btn filterbtn" id="filterbtn">☰ Filtreler</button>
+        <h2>İlanlar</h2><span class="count" id="count"></span>
+        <span class="grow"></span>
+        <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input class="field" type="search" id="q" placeholder="Sokak, posta kodu, kelime…"></div>
+        <select class="field" id="sort"><option value="newest">En yeni</option><option value="price_asc">Fiyat: düşükten yükseğe</option><option value="price_desc">Fiyat: yüksekten düşüğe</option><option value="area_desc">En büyük</option><option value="ppm2">En iyi €/m²</option><option value="available">En erken müsait</option></select>
+      </div>
+      <div class="grid" id="list"></div>
+    </section>
   </div>
-  <div class="filters">
-    <div class="chips" id="types"></div><div class="sep"></div>
-    <input class="num" id="min_price" type="number" placeholder="€ min">
-    <input class="num" id="max_price" type="number" placeholder="€ maks">
-    <input class="num" id="min_area" type="number" placeholder="min m²">
-    <select id="city"><option value="">Tüm şehirler</option></select>
-    <select id="source"><option value="">Tüm siteler</option></select>
-    <select id="since"><option value="">Her zaman</option><option value="1">Son 1 saat</option><option value="24">Son 24 saat</option><option value="168">Son 7 gün</option></select>
-    <select id="sort"><option value="newest">En yeni</option><option value="price_asc">Ucuzdan pahalıya</option><option value="price_desc">Pahalıdan ucuza</option><option value="area_desc">En büyük</option><option value="ppm2">€/m² en iyi</option><option value="available">En erken müsait</option></select>
-    <label class="inline">Taşınma en geç <input type="date" id="available_by"></label>
-    <select id="stay"><option value="">Süre: hepsi</option><option value="long">Uzun dönem (1+ yıl)</option><option value="short">Kısa dönem (&lt;1 yıl)</option></select>
-    <label class="inline"><input type="checkbox" id="known_only"> Bilinmeyenleri gizle</label>
-    <button class="chip" id="fav">★ Favoriler</button>
-    <input type="search" id="q" placeholder="Sokak, posta kodu…">
-  </div>
-</header>
-<div class="upd" id="upd"><span><b>Yeni sürüm var!</b> <span id="updmsg"></span></span><button class="primary" id="updbtn">⬇ Güncelle</button></div>
-<main id="list"></main>
+</div>
+
+<footer><div class="wrap"><span>FindHouseInNL · kişisel kullanım için</span><span id="footInfo"></span></div></footer>
+<div class="toast" id="toast"></div>
+
 <script>
 const TYPES={room:"Oda",studio:"Stüdyo",apartment:"Daire",house:"Ev"};
 const $=id=>document.getElementById(id);
-const st={types:new Set(),fav:false};
+const st={types:new Set()};
 let saved={};try{saved=JSON.parse(localStorage.getItem("evbul")||"{}")}catch(e){}
+let lastStats=null, firstLoad=true;
+
+// selamlama
+const h=new Date().getHours();
+$("hello").textContent=h<6?"İyi geceler":h<12?"Günaydın":h<18?"İyi günler":"İyi akşamlar";
+
 for(const[k,v]of Object.entries(TYPES)){const b=document.createElement("button");b.className="chip";b.textContent=v;b.dataset.t=k;
   b.onclick=()=>{st.types.has(k)?st.types.delete(k):st.types.add(k);b.classList.toggle("on");load()};$("types").append(b)}
 (saved.types||[]).forEach(t=>{st.types.add(t);document.querySelector(`[data-t=${t}]`)?.classList.add("on")});
 const FIELDS=["min_price","max_price","min_area","since","sort","q","available_by","stay"];
 FIELDS.forEach(id=>{if(saved[id])$(id).value=saved[id];$(id).addEventListener("input",debounce(load,300))});
 $("known_only").checked=!!saved.known_only;$("known_only").onchange=load;
-$("fav").onclick=()=>{st.fav=!st.fav;$("fav").classList.toggle("on");load()};
+$("fav").checked=!!saved.fav;$("fav").onchange=load;
 $("city").onchange=$("source").onchange=load;
-$("scrape").onclick=async()=>{await fetch("/api/scrape",{method:"POST"});$("scrape").textContent="Taranıyor…";poll()};
+$("reset").onclick=()=>{FIELDS.filter(i=>i!=="sort").forEach(i=>$(i).value="");$("known_only").checked=$("fav").checked=false;
+  $("city").value=$("source").value="";st.types.clear();document.querySelectorAll("#types .chip").forEach(c=>c.classList.remove("on"));load();toast("Filtreler temizlendi")};
+const openSide=o=>{$("side").classList.toggle("open",o);$("scrim").classList.toggle("open",o)};
+$("filterbtn").onclick=()=>openSide(true);$("scrim").onclick=()=>openSide(false);
+$("scrape").onclick=async()=>{await fetch("/api/scrape",{method:"POST"});setScraping(true);toast("Tarama başladı — açılan Chrome penceresini kapatma");poll()};
+
 function debounce(f,ms){let t;return()=>{clearTimeout(t);t=setTimeout(f,ms)}}
-function esc(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
-function ago(ts){const m=(Date.now()/1000-ts)/60;return m<60?`${Math.round(m)} dk önce`:m<1440?`${Math.round(m/60)} sa önce`:`${Math.round(m/1440)} gün önce`}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function ago(ts){const m=(Date.now()/1000-ts)/60;return m<1?"az önce":m<60?`${Math.round(m)} dk önce`:m<1440?`${Math.round(m/60)} sa önce`:`${Math.round(m/1440)} gün önce`}
+function eur(n){return "€"+Number(n).toLocaleString("nl-NL")}
+function toast(t){const e=$("toast");e.textContent=t;e.classList.add("show");clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove("show"),2600)}
+function setScraping(on){$("scrape").classList.toggle("busy",on);$("scrape").disabled=on;$("scrapeTxt").textContent=on?"Taranıyor…":"Şimdi tara";$("dot").classList.toggle("live",on)}
+
+function skeleton(){$("list").innerHTML=Array.from({length:6},()=>`<div class="card"><div class="img skel" style="border-radius:0"></div>
+  <div class="body"><div class="skel" style="height:24px;width:40%"></div><div class="skel" style="height:16px;width:85%;margin-top:6px"></div>
+  <div class="skel" style="height:14px;width:60%;margin-top:6px"></div></div></div>`).join("")}
+
 async function load(){
   const p=new URLSearchParams();
   if(st.types.size)p.set("type",[...st.types].join(","));
@@ -93,40 +258,70 @@ async function load(){
   if($("since").value)p.set("since_hours",$("since").value);
   if($("city").value)p.set("city",$("city").value);
   if($("source").value)p.set("source",$("source").value);
-  if(st.fav)p.set("favorites","1");
-  try{localStorage.setItem("evbul",JSON.stringify({types:[...st.types],known_only:$("known_only").checked,...Object.fromEntries(FIELDS.map(i=>[i,$(i).value]))}))}catch(e){}
-  const rows=await (await fetch("/api/listings?"+p)).json();
-  $("list").innerHTML=rows.length?rows.map(card).join(""):`<div class="empty">Bu filtrelere uyan ilan yok.<br>Filtreleri gevşet ya da “Şimdi tara”ya bas.</div>`;
+  if($("fav").checked)p.set("favorites","1");
+  try{localStorage.setItem("evbul",JSON.stringify({types:[...st.types],known_only:$("known_only").checked,fav:$("fav").checked,...Object.fromEntries(FIELDS.map(i=>[i,$(i).value]))}))}catch(e){}
+  if(firstLoad)skeleton();
+  let rows=[];try{rows=await (await fetch("/api/listings?"+p)).json()}catch(e){$("list").innerHTML=emptyBox("📡","Programa ulaşılamıyor","Siyah FindHouseInNL penceresi kapanmış olabilir. Programı yeniden başlat.");return}
+  firstLoad=false;
+  $("count").textContent=rows.length?`${rows.length} sonuç`:"";
+  const prices=rows.map(r=>r.price).filter(Boolean);
+  $("sMin").textContent=prices.length?eur(Math.min(...prices)):"–";
+  $("sMinSub").textContent=prices.length?`ortalama ${eur(Math.round(prices.reduce((a,b)=>a+b,0)/prices.length))}`:"filtrelerine göre";
+  if(rows.length){$("list").innerHTML=rows.map(card).join("");return}
+  const noData=lastStats&&!lastStats.total;
+  $("list").innerHTML=noData
+    ? emptyBox("🏠","İlk tarama bekleniyor","Yukarıdaki “Şimdi tara” düğmesine bas. Birkaç dakika içinde ilanlar burada olur.")
+    : emptyBox("🔍","Bu filtrelere uyan ilan yok","Fiyat aralığını genişletmeyi ya da birkaç filtreyi kaldırmayı dene.",'<button class="btn" onclick="$(\'reset\').click()">Filtreleri temizle</button>');
 }
+function emptyBox(ico,t,s,extra=""){return `<div class="empty"><div style="font-size:40px">${ico}</div><h3>${t}</h3><p>${s}</p>${extra}</div>`}
+
 function card(r){
   const isNew=Date.now()/1000-r.first_seen<86400, ppm=r.price&&r.area_m2?Math.round(r.price/r.area_m2):null;
   const sub=[r.area_m2&&r.area_m2+" m²",r.rooms&&r.rooms+" oda",r.furnished&&({furnished:"Eşyalı",upholstered:"Yarı eşyalı",shell:"Eşyasız"}[r.furnished]),r.postcode,r.city].filter(Boolean).join(" · ");
-  const links=[{source:r.source,url:r.url},...(r.also_on||[])].map(x=>`<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.source)} ↗</a>`).join("");
-  return `<div class="card"><div class="img" style="${r.image?`background-image:url('${esc(r.image)}')`:""}">
-  <span class="badge">${TYPES[r.type]||"?"}</span>${isNew?'<span class="badge new">YENİ</span>':""}</div>
-  <div class="body"><div class="price">${r.price?"€"+r.price.toLocaleString("nl-NL"):"Fiyat yok"} <small>/ay${ppm?` · €${ppm}/m²`:""}</small></div>
-  <a class="title" href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.title)}</a><div class="sub">${esc(sub)}</div>
-  <div class="facts">${avail(r)}${stayTxt(r)}</div>
-  ${r.description?`<details class="desc"><summary>Açıklama</summary><div>${esc(r.description)}</div></details>`:(r.detail_at?"":'<div class="sub" style="font-size:12px">açıklama sırada…</div>')}
-  <div class="row"><span class="src">${links}<span class="sub">${ago(r.first_seen)}</span></span>
-  <span class="icons"><button title="Favori" onclick="flag('${r.uid}','favorite',${r.favorite?0:1})">${r.favorite?"★":"☆"}</button><button title="Gizle" onclick="flag('${r.uid}','hidden',1)">✕</button></span></div></div></div>`}
+  const links=[{source:r.source,url:r.url},...(r.also_on||[])].map(x=>`<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.source)}</a>`).join("");
+  const img=r.image?`<a class="img" href="${esc(r.url)}" target="_blank" rel="noopener" style="background-image:url('${esc(r.image)}')">`
+    :`<a class="img none" href="${esc(r.url)}" target="_blank" rel="noopener"><svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" opacity=".5"><path d="M3 11.2 12 4l9 7.2V20h-6.2v-5.5H9.2V20H3z"/></svg>`;
+  return `<article class="card">${img}
+    <span class="badge">${TYPES[r.type]||"Diğer"}</span>${isNew?'<span class="badge new">YENİ</span>':""}</a>
+    <div style="position:relative"><button class="fav ${r.favorite?"on":""}" style="top:-44px;bottom:auto" title="${r.favorite?"Favorilerden çıkar":"Favorilere ekle"}" onclick="flag('${r.uid}','favorite',${r.favorite?0:1})">${r.favorite?"★":"☆"}</button></div>
+    <div class="body">
+      <div class="price">${r.price?eur(r.price):"Fiyat sorulmalı"} <small>/ay${ppm?` · €${ppm}/m²`:""}</small></div>
+      <a class="title" href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.title)}</a>
+      <div class="sub">${esc(sub)}</div>
+      <div class="facts">${avail(r)}${stayTxt(r)}</div>
+      ${r.description?`<details class="desc"><summary>Açıklamayı göster</summary><div>${esc(r.description)}</div></details>`:(r.detail_at?"":'<div class="sub" style="font-size:12px;margin-top:6px">Açıklama birazdan okunacak…</div>')}
+      <div class="foot"><span class="src">${links}</span><span class="when">${ago(r.first_seen)}</span>
+        <button class="hide" title="Bu ilanı gizle" onclick="flag('${r.uid}','hidden',1)">Gizle</button></div>
+    </div></article>`}
 const AY=["Oca","Şub","Mar","Nis","May","Haz","Tem","Ağu","Eyl","Eki","Kas","Ara"];
-function avail(r){if(!r.available_from)return '<span class="fact mute">📅 tarih ?</span>';
+function avail(r){if(!r.available_from)return '<span class="fact mute">📅 tarih belirsiz</span>';
   const d=new Date(r.available_from+"T00:00:00"),t=new Date();t.setHours(0,0,0,0);
-  return `<span class="fact">📅 ${d<=t?"Hemen":d.getDate()+" "+AY[d.getMonth()]+" "+d.getFullYear()}</span>`}
+  return d<=t?'<span class="fact ok">📅 Hemen müsait</span>':`<span class="fact">📅 ${d.getDate()} ${AY[d.getMonth()]} ${d.getFullYear()}</span>`}
 function stayTxt(r){const mn=r.min_months,mx=r.max_months;
-  if(!r.stay&&!mn&&!mx)return '<span class="fact mute">⏳ süre ?</span>';
+  if(!r.stay&&!mn&&!mx)return '<span class="fact mute">⏳ süre belirsiz</span>';
   let t=r.stay==="long"?"Uzun dönem":r.stay==="short"?"Kısa dönem":"Süre";
-  if(mn&&mx&&mn===mx)t+=` · ${mn} ay`;else if(mn)t+=` · min ${mn} ay`;else if(mx)t+=` · maks ${mx} ay`;
+  if(mn&&mx&&mn===mx)t+=` · ${mn} ay`;else if(mn)t+=` · en az ${mn} ay`;else if(mx)t+=` · en çok ${mx} ay`;
   return `<span class="fact">⏳ ${t}</span>`}
-async function flag(uid,f,v){await fetch("/api/flag",{method:"POST",body:JSON.stringify({uid,flag:f,value:v})});load()}
+async function flag(uid,f,v){await fetch("/api/flag",{method:"POST",body:JSON.stringify({uid,flag:f,value:v})});
+  toast(f==="hidden"?"İlan gizlendi":v?"Favorilere eklendi ★":"Favorilerden çıkarıldı");load()}
+
 async function stats(){
-  const s=await (await fetch("/api/stats")).json();
+  let s;try{s=await (await fetch("/api/stats")).json()}catch(e){$("meta").textContent="Programa ulaşılamıyor";$("dot").style.background="var(--warn)";return {}}
+  lastStats=s;
   const fill=(id,vals)=>{const sel=$(id),cur=sel.value;sel.length=1;vals.forEach(v=>sel.add(new Option(v,v)));sel.value=cur};
-  fill("city",s.cities);fill("source",s.sources);
-  let m=`${s.total} ilan`+(s.last_update?` · son güncelleme ${ago(s.last_update)}`:"");
-  if(s.last_report){m+=` · son tur: ${s.last_report.new} yeni`;const e=Object.keys(s.last_report.errors);if(e.length)m+=` · ⚠ ${e.join(", ")}`}
-  $("meta").textContent=m;$("scrape").textContent=s.scraping?"Taranıyor…":"↻ Şimdi tara";return s}
+  fill("city",s.cities||[]);fill("source",s.sources||[]);
+  if(s.city_names&&s.city_names.length)$("heroCity").textContent=s.city_names.join(", ");
+  $("sTotal").textContent=(s.total||0).toLocaleString("nl-NL");
+  $("sTotalSub").textContent=s.last_update?`son güncelleme ${ago(s.last_update)}`:"henüz tarama yok";
+  $("sNew").textContent=s.new_24h??"–";
+  $("sSrc").textContent=s.active_sources??(s.sources||[]).length;
+  $("sSrcSub").textContent=`her ${s.interval||10} dk taranır`+(s.telegram?" · Telegram açık":"");
+  let m=s.scraping?"Tarama sürüyor…":s.last_update?`Güncel · ${ago(s.last_update)}`:"Hazır";
+  if(!s.scraping&&s.last_report){const e=Object.keys(s.last_report.errors||{});m+=` · son tur ${s.last_report.new} yeni`;if(e.length)m+=` · ⚠ ${e.length} site doğrulama/hata`}
+  $("meta").textContent=m;$("pill").title=s.last_report&&Object.keys(s.last_report.errors||{}).length?"Sorunlu siteler: "+Object.keys(s.last_report.errors).join(", "):"";
+  $("onboard").style.display=s.total?"none":"block";
+  $("footInfo").textContent=`${(s.sources||[]).length} kaynak · ${s.total||0} ilan`;
+  setScraping(!!s.scraping);return s}
 async function poll(){const s=await stats();if(s.scraping)setTimeout(poll,3000);else load()}
 async function checkUpdate(){try{const u=await (await fetch("/api/update")).json();
   if(u.available){$("updmsg").textContent=u.message||"";$("upd").style.display="flex";}}catch(e){}}
@@ -134,7 +329,7 @@ $("updbtn").onclick=async()=>{$("updbtn").disabled=true;$("updbtn").textContent=
   const r=await (await fetch("/api/update",{method:"POST"})).json();
   $("updmsg").textContent=r.ok?"Güncellendi! Bu pencereyi ve siyah FindHouseInNL penceresini kapatıp programı tekrar aç.":"Olmadı: "+(r.error||"");
   $("updbtn").style.display="none";};
-stats().then(load);checkUpdate();setInterval(()=>stats().then(load),60000);setInterval(checkUpdate,30*60000);
+stats().then(s=>{load();if(s.scraping)poll()});checkUpdate();setInterval(()=>stats().then(load),60000);setInterval(checkUpdate,30*60000);
 </script>
 </body>
 </html>

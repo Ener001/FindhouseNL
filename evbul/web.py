@@ -60,7 +60,12 @@ def serve(cfg: dict, db: DB, wake: threading.Event, state: dict, host="127.0.0.1
             elif u.path == "/api/stats":
                 self._json({**db.stats(), "scraping": state["scraping"],
                             "last_report": state["last_report"],
-                            "sources": list((cfg.get("sources") or {}).keys())})
+                            "sources": list((cfg.get("sources") or {}).keys()),
+                            "active_sources": sum(1 for v in (cfg.get("sources") or {}).values()
+                                                  if not isinstance(v, dict) or v.get("enabled", True)),
+                            "telegram": bool((cfg.get("telegram") or {}).get("bot_token")),
+                            "interval": cfg.get("interval_minutes", 10),
+                            "city_names": cfg.get("cities") or []})
             else:
                 self._json({"error": "not found"}, 404)
 

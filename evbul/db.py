@@ -165,4 +165,7 @@ class DB:
             "SELECT source, COUNT(*) n FROM listings GROUP BY source")}
         cities = [x["city"] for x in self.conn.execute(
             "SELECT DISTINCT city FROM listings WHERE city IS NOT NULL ORDER BY city")]
-        return {"total": r["n"], "last_update": r["last"], "by_source": by_src, "cities": cities}
+        new24 = self.conn.execute(
+            "SELECT COUNT(*) n FROM listings WHERE duplicate_of IS NULL AND first_seen > strftime('%s','now') - 86400"
+        ).fetchone()["n"]
+        return {"total": r["n"], "last_update": r["last"], "by_source": by_src, "cities": cities, "new_24h": new24}
