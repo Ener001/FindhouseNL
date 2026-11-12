@@ -1,8 +1,8 @@
 {
   "android": {
-    "versionCode": 3,
-    "versionName": "0.3",
+    "versionCode": 4,
+    "versionName": "0.4",
     "url": "https://ener001.github.io/FindhouseNL/FindHouseInNL.apk",
-    "notes": "Haritada evler artık görünüyor; tarama sırasında harita sıfırlanmıyor."
+    "notes": "Üstteki tarama durumu yazısı artık kesilmiyor; haritada evler görünüyor."
   }
 }
