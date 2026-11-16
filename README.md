@@ -8,10 +8,15 @@ yeni ilan düşünce Telegram'dan haber verir. Kişisel kullanım içindir.
 
 ## Kolay kurulum (Windows)
 
-Adım adım, resimli anlatım: **https://ener001.github.io/FindhouseNL/#pc**
+**[⬇ FindHouseInNL-Setup.exe](https://github.com/Ener001/FindhouseNL/releases/latest/download/FindHouseInNL-Setup.exe)**
+→ çift tıkla → İleri → Kur. Adım adım anlatım: https://ener001.github.io/FindhouseNL/#pc
 
-Kısaca: ZIP'i indir → "Tümünü ayıkla" → **KUR.bat**'a çift tıkla (Python yoksa kendisi kurar)
-→ masaüstündeki **FindHouseInNL** simgesiyle aç.
+Kurulum dosyası her push'ta GitHub Actions'ta (`.github/workflows/windows.yml`) otomatik derlenir:
+PyInstaller ile `app.py` → `FindHouseInNL.exe`, Inno Setup ile `installer/FindHouseInNL.iss` → kurulum
+dosyası, sonra GitHub Releases'e konur. Kurulu program yeni Release'i görünce kendini günceller.
+Kullanıcı verileri `%LOCALAPPDATA%\FindHouseInNL` içinde durur.
+
+Eski yöntem: ZIP'i indir → "Tümünü ayıkla" → **KUR.bat** → masaüstündeki simge.
 
 ## Elle kurulum (geliştirici)
 

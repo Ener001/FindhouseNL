@@ -86,7 +86,7 @@ footer{padding:28px 0 60px;color:var(--mute);font-size:15px;border-top:1px solid
   <p style="margin:24px 0 0;font-weight:700">Nereye kurmak istiyorsunuz?</p>
   <div class="pick">
     <a href="#android"><span class="big">📱</span><b>Android telefona</b><span>Samsung, Xiaomi, Oppo… (iPhone değil). Yaklaşık 3 dakika.</span></a>
-    <a href="#pc"><span class="big">💻</span><b>Windows bilgisayara</b><span>Dizüstü veya masaüstü. Yaklaşık 10 dakika.</span></a>
+    <a href="#pc"><span class="big">💻</span><b>Windows bilgisayara</b><span>Dizüstü veya masaüstü. Yaklaşık 3 dakika.</span></a>
   </div>
   <p class="tip">🍎 <b>iPhone</b> için henüz bir sürüm yok. iPhone kullanıyorsanız bilgisayar sürümünü kurabilirsiniz.</p>
 </header>
@@ -96,10 +96,9 @@ footer{padding:28px 0 60px;color:var(--mute);font-size:15px;border-top:1px solid
   <p class="sub">Kurulumda bu kelimelerle karşılaşacaksınız. Hiçbirini bilmeniz gerekmiyor; ne olduklarını bilmek sadece içinizi rahatlatsın.</p>
   <div class="words">
     <div class="word"><span class="e">🗂</span><div><b>GitHub</b><p>İnternette programların saklandığı bir "dosya dolabı". Şu an okuduğunuz sayfa da orada duruyor. Sadece dosya indireceğiz; <b>üye olmanız veya giriş yapmanız gerekmez.</b></p></div></div>
-    <div class="word"><span class="e">🐍</span><div><b>Python</b><p>Bilgisayar programının yazıldığı dil. Bilgisayarınız bu dili ilk başta bilmez; Python'u kurmak, bilgisayara bir <b>tercüman</b> yerleştirmek gibidir. Ücretsizdir, bir kere kurulur. Kurulumu sizin yerinize biz başlatıyoruz.</p></div></div>
+    <div class="word"><span class="e">🐍</span><div><b>Python</b><p>Programın yazıldığı dil. Bilgisayarlar bu dili kendiliğinden bilmez; çalıştırmak için bir <b>tercüman</b> gerekir. İyi haber: tercüman programın içinde hazır geliyor, <b>sizin ayrıca bir şey kurmanız gerekmez.</b></p></div></div>
     <div class="word"><span class="e">📦</span><div><b>APK</b><p>Android telefonlar için uygulama dosyası. Play Store'dan indirmek yerine uygulamayı doğrudan bu dosyayla kuruyoruz.</p></div></div>
-    <div class="word"><span class="e">🗜</span><div><b>ZIP</b><p>Birçok dosyanın tek pakete sıkıştırılmış hâli, bir koli gibi. İçindekileri kullanmadan önce koliyi açmak (<b>"Tümünü ayıkla"</b>) gerekir.</p></div></div>
-    <div class="word"><span class="e">⚙️</span><div><b>.bat dosyası</b><p>Çift tıklayınca bilgisayara sırayla birkaç iş yaptıran küçük bir talimat dosyası. Siyah bir pencere açılır ve işini bitirir. Korkmanıza gerek yok.</p></div></div>
+    <div class="word"><span class="e">💿</span><div><b>Kurulum dosyası (.exe)</b><p>Bilgisayara program kuran dosya. Çift tıklarsınız, "İleri" dersiniz, program kurulur. Bildiğiniz diğer programlarla aynı.</p></div></div>
   </div>
 </section>
 
@@ -130,48 +129,40 @@ footer{padding:28px 0 60px;color:var(--mute);font-size:15px;border-top:1px solid
 
 <section id="pc">
   <h2>💻 Windows bilgisayara kurulum</h2>
-  <p class="sub">Toplam yaklaşık 10 dakika sürer, çoğu bekleme. Bilgisayarın internete bağlı olması yeterli.</p>
+  <p class="sub">Normal bir program gibi kurulur: indir, çift tıkla, "İleri" de. Yaklaşık 3 dakika sürer, yönetici şifresi gerekmez.</p>
   <ol class="steps">
-    <li><h3>Programı indirin</h3>
-      <p>Aşağıdaki düğmeye tıklayın. <b>FindhouseNL-master.zip</b> adlı bir dosya <b>İndirilenler</b> klasörüne iner.</p>
-      <a class="btn" href="https://github.com/Ener001/FindhouseNL/archive/refs/heads/master.zip">⬇ Programı indir <small>ZIP dosyası</small></a></li>
-    <li><h3>Koliyi açın (ZIP'i ayıklayın)</h3>
-      <ul><li>Klavyede <span class="key">⊞ Windows</span> + <span class="key">E</span> tuşlarına birlikte basın; dosya gezgini açılır.</li>
-        <li>Soldan <b>İndirilenler</b>'e tıklayın.</li>
-        <li><b>FindhouseNL-master</b> dosyasına <b>sağ tıklayın</b> → <span class="ui">Tümünü ayıkla…</span> → <span class="ui">Ayıkla</span>.</li></ul>
-      <p>Yeni bir pencerede <b>FindhouseNL-master</b> klasörü açılır. Programın tüm dosyaları burada.</p>
-      <p class="warn">⚠️ Bu adımı atlamayın. ZIP'in içine çift tıklayıp oradan çalıştırırsanız program çalışmaz.</p></li>
-    <li><h3>KUR dosyasına çift tıklayın</h3>
-      <p>Açılan klasörde <b>KUR</b> (veya <b>KUR.bat</b>) adlı dosyayı bulun ve <b>çift tıklayın</b>. Siyah bir pencere açılır ve her şeyi kendisi kurar.</p>
-      <p>Windows mavi bir uyarı gösterebilir. Bu, internetten inen her programda çıkar:</p>
+    <li><h3>Kurulum dosyasını indirin</h3>
+      <p>Aşağıdaki düğmeye tıklayın. <b>FindHouseInNL-Setup</b> adlı dosya <b>İndirilenler</b> klasörüne iner.</p>
+      <a class="btn" href="https://github.com/Ener001/FindhouseNL/releases/latest/download/FindHouseInNL-Setup.exe">⬇ Windows için indir <small>yaklaşık 60 MB</small></a>
+      <p class="tip">Tarayıcı "bu dosya sık indirilmiyor" derse: Edge'de dosyanın yanındaki <span class="key">···</span> → <span class="ui">Sakla</span>; Chrome'da <span class="ui">Yine de indir</span> deyin. Program yeni ve az bilindiği için bu uyarı çıkıyor.</p></li>
+    <li><h3>İnen dosyayı açın</h3>
+      <p>Tarayıcının sağ üstündeki indirme okuna tıklayıp <b>FindHouseInNL-Setup</b>'a tıklayın. Bulamazsanız klavyede <span class="key">⊞ Windows</span> + <span class="key">E</span>'ye basın, soldan <b>İndirilenler</b>'e girip dosyaya <b>çift tıklayın</b>.</p></li>
+    <li><h3>Windows'un mavi uyarısını geçin</h3>
+      <p>Windows, internetten inen ve henüz tanımadığı programlarda bu ekranı gösterir:</p>
       <div class="mock"><div class="bar">Windows kişisel bilgisayarınızı korudu</div>
         <div class="in">Microsoft Defender SmartScreen, tanınmayan bir uygulamanın başlatılmasını engelledi…<br><span class="link">Ek bilgi</span>
         <div class="row"><span class="hl">Yine de çalıştır</span><span>Çalıştırma</span></div></div></div>
-      <p>Önce <b>Ek bilgi</b> yazısına, sonra <span class="ui">Yine de çalıştır</span>'a tıklayın.</p></li>
-    <li><h3>Kurulumun bitmesini bekleyin</h3>
-      <p>Bilgisayarda Python yoksa KUR dosyası onu da kurar. Bu birkaç dakika sürebilir; "izin verilsin mi?" diye sorarsa <span class="ui">Evet</span> deyin.</p>
-      <div class="term">[1/3] Python bulunamadi. Simdi otomatik kuruluyor…
-…
-  Python kuruldu.
-  Simdi bu pencereyi kapatin ve KUR dosyasina
-  BIR KEZ DAHA cift tiklayin.</div>
-      <p>Bu yazıyı görürseniz pencereyi kapatın ve <b>KUR</b>'a <b>bir kez daha</b> çift tıklayın. Sonunda şunu görmelisiniz:</p>
-      <div class="term">  KURULUM BITTI!
-  Masaustundeki "FindHouseInNL" simgesine
-  cift tiklayarak programi acabilirsiniz.</div>
-      <p>Herhangi bir tuşa basınca pencere kapanır.</p></li>
-    <li><h3>Programı açın</h3>
-      <p>Masaüstünde <b>FindHouseInNL</b> simgesi oluştu. Ona <b>çift tıklayın</b>.</p>
-      <ul><li>Siyah bir pencere açılır. Bu, programın motorudur. <b>Kapatmayın</b>, isterseniz sağ üstteki <span class="key">–</span> ile küçültün.</li>
-        <li>Birkaç saniye sonra internet tarayıcınızda FindHouseInNL sayfası açılır. Programı buradan kullanırsınız.</li></ul></li>
+      <p>Önce <b>Ek bilgi</b> yazısına, sonra çıkan <span class="ui">Yine de çalıştır</span> düğmesine tıklayın.</p></li>
+    <li><h3>Kurulumu tamamlayın</h3>
+      <p>Türkçe bir kurulum penceresi açılır:</p>
+      <ul><li><b>"Masaüstüne simge koy"</b> işaretli kalsın. İsterseniz <b>"Bilgisayar açılınca FindHouseInNL de açılsın"</b>ı da işaretleyin.</li>
+        <li><span class="ui">İleri</span> → <span class="ui">Kur</span> deyin, birkaç saniye bekleyin.</li>
+        <li>Son ekranda <b>"FindHouseInNL'i şimdi aç"</b> işaretliyken <span class="ui">Son</span>'a tıklayın.</li></ul></li>
+    <li><h3>Program açılır</h3>
+      <p>FindHouseInNL kendi penceresinde açılır. Programı bu pencereden kullanırsınız.</p>
+      <ul><li>Saatin yanında (ekranın sağ altında) turuncu ev simgesi belirir. Bu, programın arka planda çalıştığını gösterir.</li>
+        <li>Pencereyi kapatsanız da program arka planda yeni ilanlara bakmaya devam eder. Tekrar açmak için masaüstündeki <b>FindHouseInNL</b> simgesine çift tıklayın.</li>
+        <li>Programı tamamen kapatmak için saatin yanındaki turuncu simgeye <b>sağ tıklayıp</b> <span class="ui">Kapat</span> deyin.</li></ul>
+      <p class="tip">Simgeyi göremiyorsanız saatin solundaki küçük <span class="key">^</span> okuna tıklayın; gizli simgeler orada durur.</p></li>
     <li><h3>İlk taramayı yapın</h3>
-      <p>Sayfadaki turuncu <span class="ui">↻ Şimdi tara</span> düğmesine basın.</p>
-      <ul><li>Programın kendi kullandığı ayrı bir Chrome penceresi açılır ve siteleri sırayla gezer. <b>Bu pencereyi kapatmayın</b>, küçültebilirsiniz.</li>
+      <p>Programdaki turuncu <span class="ui">↻ Şimdi tara</span> düğmesine basın.</p>
+      <ul><li>Programın kullandığı ayrı bir Chrome (yoksa Edge) penceresi açılır ve siteleri sırayla gezer. <b>Bu pencereyi kapatmayın</b>, küçültebilirsiniz.</li>
         <li>Bir sitede "robot değilim" kutusu çıkarsa o pencerede kutuya bir kez tıklayın. Bilgisayar bunu hatırlar, genelde bir daha sormaz.</li>
-        <li>Birkaç dakika içinde ilanlar sayfada görünür. Program bundan sonra her 10 dakikada bir kendisi tarar.</li></ul></li>
+        <li>Birkaç dakika içinde ilanlar görünür. Program bundan sonra her 10 dakikada bir kendisi tarar.</li></ul></li>
   </ol>
-  <p class="good">✅ Kurulum bitti. Bundan sonra programı açmak için sadece <b>masaüstündeki FindHouseInNL simgesine</b> çift tıklamanız yeterli. Kapatmak için siyah pencereyi kapatın.</p>
-  <p class="tip">🔄 <b>Güncellemeler:</b> Yeni sürüm çıkınca sayfanın üstünde "Yeni sürüm hazır" yazar. <span class="ui">⬇ Güncelle</span>'ye basın, sonra programı kapatıp masaüstü simgesinden yeniden açın. Ayarlarınız ve kayıtlı ilanlarınız kaybolmaz.</p>
+  <p class="good">✅ Kurulum bitti. Programı açmak için <b>masaüstündeki FindHouseInNL simgesine</b> çift tıklamanız yeterli.</p>
+  <p class="tip">🔄 <b>Güncellemeler kendiliğinden gelir.</b> Yeni sürüm çıkınca programın üstünde "Yeni sürüm hazır" yazar. <span class="ui">⬇ Güncelle</span>'ye basın; program yeni sürümü kurar ve birkaç saniye içinde kendini yeniden açar. Ayarlarınız ve kayıtlı ilanlarınız kaybolmaz.</p>
+  <p class="tip">🗑 <b>Kaldırmak isterseniz:</b> Başlat → Ayarlar → Uygulamalar → <b>FindHouseInNL</b> → <span class="ui">Kaldır</span>.</p>
 </section>
 
 <section id="kullanim">
@@ -194,17 +185,15 @@ footer{padding:28px 0 60px;color:var(--mute);font-size:15px;border-top:1px solid
   <details><summary>Antivirüs (AVG, Avast vb.) dosyayı sildi veya "tehdit" dedi</summary><div>
     <p>Bu bir yanlış alarm. Program başka bir pencereyi (Chrome'u) yönettiği için bazı antivirüsler şüpheleniyor.</p>
     <p>Antivirüs programını açın → <b>Karantina</b> (Quarantine) bölümüne girin → FindHouseInNL dosyasını seçip <b>Geri yükle ve istisna ekle</b> (Restore and add exception) deyin. Sonra adımı tekrarlayın.</p></div></details>
-  <details><summary>KUR dosyasını bulamıyorum / çift tıklayınca bir şey olmuyor</summary><div>
-    <p>ZIP'i ayıklamamış olabilirsiniz (2. adım). İndirilenler'de ZIP'e sağ tıklayıp <b>Tümünü ayıkla</b> deyin ve açılan <b>yeni</b> klasördeki KUR'u kullanın.</p>
-    <p>Dosya uzantıları gizliyse KUR dosyası sadece "KUR" diye görünür; simgesi dişli çark gibidir. Doğru dosya odur.</p></div></details>
-  <details><summary>"Python otomatik kurulamadı" yazıyor</summary><div>
-    <p>KUR dosyası Python'un sitesini açar. Sarı <b>Download Python</b> düğmesine basın, inen dosyayı açın.</p>
-    <p class="warn">⚠️ Kurulum penceresinin <b>en altındaki</b> <b>"Add python.exe to PATH"</b> kutusunu mutlaka işaretleyin, sonra <b>Install Now</b> deyin.</p>
-    <p>Bitince KUR dosyasına tekrar çift tıklayın.</p></div></details>
-  <details><summary>Siyah pencere açılıp hemen kapanıyor veya kırmızı yazılar var</summary><div>
-    <p>Önce KUR dosyasını çalıştırdığınızdan emin olun (3. adım). Hâlâ oluyorsa siyah penceredeki yazının telefonla fotoğrafını çekip yardım isteyin. Pencere en sonda "bir tuşa basın" diye bekler, yani okumaya vaktiniz olur.</p></div></details>
-  <details><summary>Tarayıcıda "Bu siteye ulaşılamıyor" yazıyor</summary><div>
-    <p>Siyah pencere kapalı demektir. Masaüstündeki FindHouseInNL simgesine tekrar çift tıklayın ve siyah pencereyi açık bırakın.</p></div></details>
+  <details><summary>Eski yöntem: ZIP + KUR dosyası (bilgisayarı bilenler için)</summary><div>
+    <p>Kurulum dosyası yerine kaynak kodu kullanmak isterseniz: <a href="https://github.com/Ener001/FindhouseNL/archive/refs/heads/master.zip">ZIP'i indirin</a>, sağ tıklayıp <b>Tümünü ayıkla</b> deyin, açılan klasörde <b>KUR.bat</b>'a çift tıklayın (Python yoksa kendisi kurar), sonra masaüstündeki simgeyle açın.</p></div></details>
+  <details><summary>Windows için indir düğmesi çalışmıyor / sayfa bulunamadı diyor</summary><div>
+    <p>Yeni sürüm o anda hazırlanıyor olabilir. 10 dakika sonra tekrar deneyin.</p></div></details>
+  <details><summary>Pencereyi kapattım, program nerede?</summary><div>
+    <p>Program arka planda çalışmaya devam ediyor. Masaüstündeki <b>FindHouseInNL</b> simgesine çift tıklayın, pencere tekrar açılır.</p></div></details>
+  <details><summary>Program açılmıyor ya da takıldı</summary><div>
+    <p>Saatin yanındaki turuncu simgeye sağ tıklayıp <b>Kapat</b> deyin, sonra masaüstü simgesinden tekrar açın. Simge yoksa bilgisayarı yeniden başlatıp deneyin.</p>
+    <p>Yine olmazsa turuncu simgeye sağ tıklayın → <b>Veri klasörünü aç</b>. Oradaki <b>log.txt</b> dosyasını yardım isteyeceğiniz kişiye gönderin.</p></div></details>
   <details><summary>Telefonda "Uygulama yüklenmedi" diyor</summary><div>
     <p>Telefonda eski bir sürüm varsa ve sorun çıkarıyorsa: önce eski FindHouseInNL'i kaldırın (simgeye basılı tutun → Kaldır), sonra dosyayı tekrar açıp yükleyin.</p></div></details>
   <details><summary>Bazı siteler hep "doğrulama" veya "hata" diyor</summary><div>

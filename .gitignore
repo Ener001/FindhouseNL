@@ -10,3 +10,9 @@ debug/
 __pycache__/
 *.pyc
 .venv/
+
+# Windows derleme çıktıları
+build/
+dist/
+*.spec
+installer/Output/
