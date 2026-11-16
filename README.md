@@ -6,7 +6,14 @@ Pararius, Funda, Holland2Stay, HouseHunting ve Findify'daki kiralık ilanları t
 oda / stüdyo / daire / ev olarak filtreler, aynı evi farklı sitelerde görünce birleştirir ve
 yeni ilan düşünce Telegram'dan haber verir. Kişisel kullanım içindir.
 
-## Kurulum (bir kez)
+## Kolay kurulum (Windows)
+
+Adım adım, resimli anlatım: **https://ener001.github.io/FindhouseNL/#pc**
+
+Kısaca: ZIP'i indir → "Tümünü ayıkla" → **KUR.bat**'a çift tıkla (Python yoksa kendisi kurar)
+→ masaüstündeki **FindHouseInNL** simgesiyle aç.
+
+## Elle kurulum (geliştirici)
 
 ```bash
 cd evbul
