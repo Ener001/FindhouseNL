@@ -26,6 +26,7 @@ concurrency:
 jobs:
   build:
     runs-on: windows-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
 
@@ -52,6 +53,16 @@ jobs:
           --hidden-import pystray._win32
           app.py
 
+      - name: Derlenen programı dene (açılabiliyor mu?)
+        shell: pwsh
+        run: |
+          $out = Join-Path $env:RUNNER_TEMP "selftest.txt"
+          $p = Start-Process "dist\FindHouseInNL\FindHouseInNL.exe" -ArgumentList "--selftest", "`"$out`"" -PassThru
+          if (-not $p.WaitForExit(90000)) { $p.Kill(); Write-Error "Program 90 sn icinde kapanmadi"; exit 1 }
+          if (-not (Test-Path $out)) { Write-Error "Program acilamadi (cikis kodu $($p.ExitCode))"; exit 1 }
+          Get-Content $out
+          Get-ChildItem dist\FindHouseInNL\_internal -Filter "python*.dll" | Format-Table Name, Length
+
       - name: Kurulum dosyasını oluştur (Inno Setup)
         shell: pwsh
         run: |
@@ -59,6 +70,21 @@ jobs:
           if (-not (Test-Path $iscc)) { choco install innosetup -y --no-progress | Out-Null }
           & $iscc "/DAppVer=1.${{ github.run_number }}" installer\FindHouseInNL.iss
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Kurulum dosyasını sessizce kur ve kurulu programı dene
+        shell: pwsh
+        run: |
+          $setup = "installer\Output\FindHouseInNL-Setup.exe"
+          $i = Start-Process $setup -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/TASKS=" -PassThru
+          if (-not $i.WaitForExit(180000)) { $i.Kill(); Write-Error "Kurulum bitmedi"; exit 1 }
+          $exe = Join-Path $env:LOCALAPPDATA "Programs\FindHouseInNL\FindHouseInNL.exe"
+          if (-not (Test-Path $exe)) { Write-Error "Kurulu exe yok: $exe"; exit 1 }
+          Get-Process FindHouseInNL -ErrorAction SilentlyContinue | Stop-Process -Force
+          $out = Join-Path $env:RUNNER_TEMP "selftest2.txt"
+          $p = Start-Process $exe -ArgumentList "--selftest", "`"$out`"" -PassThru
+          if (-not $p.WaitForExit(90000)) { $p.Kill(); Write-Error "Kurulu program kapanmadi"; exit 1 }
+          if (-not (Test-Path $out)) { Write-Error "Kurulu program acilamadi (cikis kodu $($p.ExitCode))"; exit 1 }
+          Get-Content $out
 
       - name: Yayınla (GitHub Releases)
         uses: softprops/action-gh-release@v2

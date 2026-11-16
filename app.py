@@ -92,7 +92,24 @@ def tray_image():
     return im
 
 
+def selftest(out: str) -> None:
+    """Derleme sonrası kontrol: tüm parçalar yüklenebiliyor mu? (GitHub Actions çalıştırır)"""
+    import importlib
+    lines = [f"python {sys.version.split()[0]}"]
+    for m in ["evbul.core", "evbul.web", "evbul.browser", "evbul.updater", "run", "yaml", "bs4",
+              "requests", "playwright.sync_api", "PIL.Image", "pystray"]:
+        importlib.import_module(m)
+        lines.append("ok " + m)
+    from evbul._build import BUILD
+    lines.append(f"build {BUILD}")
+    Path(out).write_text("\n".join(lines), encoding="utf-8")
+
+
 def main() -> None:
+    if len(sys.argv) >= 3 and sys.argv[1] == "--selftest":
+        sys.path.insert(0, str(BUNDLE))
+        selftest(sys.argv[2])
+        return
     if already_running():
         open_window()
         return
